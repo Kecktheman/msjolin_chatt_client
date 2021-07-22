@@ -4,6 +4,8 @@ import commonjs from 'rollup-plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import autoPreprocess from 'svelte-preprocess';
+import image from "svelte-image";
+import scss from 'rollup-plugin-scss'
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -17,16 +19,15 @@ export default {
 	},
 	plugins: [
 		svelte({
-			preprocess: autoPreprocess(),
+			preprocess: autoPreprocess({
+                    ...image(),
+               }),
 			// enable run-time checks when not in production
-			dev: !production,
+			dev: !production
 			// we'll extract any component CSS out into
 			// a separate file — better for performance
-			css: css => {
-				css.write('public/build/bundle.css');
-			}
 		}),
-
+		
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In
 		// some cases you'll need additional configuration —
@@ -38,6 +39,11 @@ export default {
 				importee === 'svelte' || importee.startsWith('svelte/')
 		}),
 		commonjs(),
+
+		scss({
+			output: true,
+			output: 'public/build/global.css',
+		}),
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated

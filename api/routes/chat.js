@@ -38,6 +38,34 @@ router.get('/', (req, res, next) => {
 		});
 });
 
+/* GET USER */
+router.get('/:messageID', (req, res, next) => {
+	console.log('GETT');
+	const ID = req.params.messageID;
+	Message.findById(ID)
+		.select('-__v')
+		.exec()
+		.then(doc => {
+			if (doc) {
+				res.status(200).json(doc);
+			} else
+				[
+					res.status(404).json({
+						message: 'No user found with id: ' + ID
+					})
+				];
+
+			res.status(200).json({
+				doc
+			});
+		})
+		.catch(err => {
+			res.status(500).json({
+				error: err
+			});
+		});
+});
+
 router.post('/', (req, res, next) => {
 	console.log(req.body);
 
@@ -76,34 +104,6 @@ router.post('/', (req, res, next) => {
 });
 
 // TEST
-
-/* GET USER */
-router.get('/:messageID', (req, res, next) => {
-	console.log('GETT');
-	const ID = req.params.messageID;
-	Message.findById(ID)
-		.select('-__v')
-		.exec()
-		.then(doc => {
-			if (doc) {
-				res.status(200).json(doc);
-			} else
-				[
-					res.status(404).json({
-						message: 'No user found with id: ' + ID
-					})
-				];
-
-			res.status(200).json({
-				doc
-			});
-		})
-		.catch(err => {
-			res.status(500).json({
-				error: err
-			});
-		});
-});
 router.delete('/:messageID', (req, res, next) => {
 	const id = req.params.messageID;
 	Message.remove({ _id: id })

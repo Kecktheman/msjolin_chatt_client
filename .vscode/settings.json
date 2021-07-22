@@ -1,0 +1,10 @@
+{
+	"appService.zipIgnorePattern": [
+		"node_modules{,/**}",
+		".vscode{,/**}",
+		"src{/**}"
+	],
+	"appService.defaultWebAppToDeploy": "/subscriptions/99d6ef5b-0ebc-4198-b5be-349b8f8e79d4/resourceGroups/msjolin-rg/providers/Microsoft.Web/sites/msjolin",
+	"appService.deploySubpath": "",
+	"git.ignoreLimitWarning": true
+}

@@ -1,14 +1,14 @@
 <script>
-  import { fly } from "svelte/transition";
+     import { fade, scale } from "svelte/transition";
 
-  let requestUrl = "https://api.spotify.com/v1/me/player/";
+     let requestUrl = "https://api.spotify.com/v1/me/player/";
 
-  let bearerKey = "";
-  console.log(bearerKey);
+     let bearerKey = "";
+     console.log(bearerKey);
 
-  $: currentlyPlaying = null;
-
-  /* let getStuff = new Promise(resolve => {
+     /*   $: currentlyPlaying = null;
+      */
+     /* let getStuff = new Promise(resolve => {
     let req = new XMLHttpRequest();
 
     req.onreadystatechange = function() {
@@ -34,60 +34,15 @@
   }); */
 </script>
 
-<style type="text/scss">
-  #spotify {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #222326;
-
-    h1 {
-      position: absolute;
-      right: 0;
-      right: -1rem;
-      bottom: -2rem;
-
-      font-size: 7rem;
-      color: #343539;
-    }
-
-    h2,
-    h3 {
-      color: #1ed760;
-    }
-    span {
-      color: #fff;
-    }
-
-    img {
-      width: 100px;
-      height: 100px;
-    }
-
-    .spotify_main {
-      display: flex;
-      max-height: 100px;
-      text-decoration: none;
-      .left {
-        margin: 0 1rem;
-      }
-      .right {
-        flex: 4;
-      }
-    }
-  }
-</style>
-
 <div
-  id="home"
-  class="section"
-  in:fly={{ x: -1500, duration: 500 }}
-  out:fly={{ x: 1500, duration: 500 }}>
+     id="home"
+     class="section is-content"
+     out:scale={{ duration: 250 }}
+     in:scale={{ duration: 250 }}
+>
+     <h1>Home</h1>
 
-  <h1>Home</h1>
-
-  <!-- <div id="spotify">
+     <!-- <div id="spotify">
     {#if currentlyPlaying !== null}
       <a
         href={currentlyPlaying.item.external_urls.spotify}
@@ -113,5 +68,4 @@
       </div>
     {/if}
   </div> -->
-
 </div>
