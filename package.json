@@ -2,10 +2,10 @@
 	"name": "tuffapi",
 	"version": "1.0.0",
 	"description": "Tuffaste api",
-	"main": "app.js",
+	"main": "main.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "node app.js",
+		"start": "sirv public",
 		"devStart": "nodemon app.js",
 		"sBuild": "rollup -c",
 		"sDev": "rollup -c -w",
@@ -45,6 +45,7 @@
 		"svelte": "^3.38.2",
 		"svelte-image": "^0.2.9",
 		"svelte-preprocess": "^3.9.12",
-		"svelte-spa-router": "^3.1.0"
+		"svelte-spa-router": "^3.1.0",
+		"sirv-cli": "^0.4.6"
 	}
 }

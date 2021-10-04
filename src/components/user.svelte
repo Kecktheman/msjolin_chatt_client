@@ -7,4 +7,4 @@
 
 </style>
 
-<div class={isYou == true ? 'you' : ''}>{name}</div>
+<span class={isYou == true ? 'you' : ''}>{name}</span>
