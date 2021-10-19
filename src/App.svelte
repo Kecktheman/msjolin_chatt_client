@@ -21,16 +21,21 @@
 
   let name = "";
 
+  let messageForm = null
+  let messageInput = null
+  let messageContainer = null
+  let userContainer = null
+
   onDestroy(() => {
     console.warn("Disconnected from chat.");
     disconnect();
   });
 
   onMount(async () => {
-    const messageForm = document.getElementById("send-container");
-    const messageInput = document.getElementById("message-input");
-    const messageContainer = document.getElementById("message-container");
-    const userContainer = document.getElementById("user-container");
+    messageForm = document.getElementById("send-container");
+    messageInput = document.getElementById("message-input");
+    messageContainer = document.getElementById("message-container");
+    userContainer = document.getElementById("user-container");
   });
 
   function init(string) {
