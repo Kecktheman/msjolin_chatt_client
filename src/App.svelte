@@ -1,33 +1,36 @@
 <script>
   import { fade, scale } from "svelte/transition";
-
   import { onMount } from "svelte";
   import { onDestroy } from "svelte";
   import { push, pop, replace } from "svelte-spa-router";
   import { compareAsc, format } from "date-fns";
+  import Fa from 'svelte-fa/src/fa.svelte'
+
+  import { faSignOutAlt, faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 
   import User from "./components/user.svelte";
   import Message from "./components/message.svelte";
-
   import "./global.scss";
 
-  const delay = t => new Promise(resolve => setTimeout(resolve, t));
-  const notificationImg =
-    "/windows10/Square44x44Logo.targetsize-48_altform-unplated.png";
+  const notificationImg = "/windows10/Square44x44Logo.targetsize-48_altform-unplated.png";
 
-  let _messages = [];
-  let _users = [];
+  let _messages = []
+  let _users = []
   let client_socket = io();
 
-  let name = "";
-
+  let name = ""
   let messageForm = null
   let messageInput = null
   let messageContainer = null
   let userContainer = null
+  let minimized = false
+
+  function clientLog(message, isError) {
+    isError ? console.error(`-- CHAT: ${message}`) : console.info(`-- CHAT: ${message}`)
+  }
 
   onDestroy(() => {
-    console.warn("Disconnected from chat.");
+    clientLog("Disconnected from chat.");
     disconnect();
   });
 
@@ -63,7 +66,7 @@
                 _messages = [..._messages, thisMessage];
               }
 
-              // You joined
+              // YOU JOINED
               _messages = [
                 ..._messages,
                 {
@@ -80,7 +83,7 @@
             client_socket.emit("first-connect", name);
 
             client_socket.on("first-connect-response", users => {
-              // SENT TO THE CONECTED USER ONLY ON FIRST OCNNECT
+              // SENT TO THE CONECTED USER ONLY ON FIRST CONNECT
               appendUsers(users, true);
               adaptChatUI();
             });
@@ -107,7 +110,7 @@
               // SENT TO OTHER USERS WHEN NEW USER CONNECTS
               appendUsers(data.data, false);
 
-              // User joined
+              // OTHER USER JOINED
               _messages = [
                 ..._messages,
                 {
@@ -127,7 +130,7 @@
 
             client_socket.on("user-disconnected", data => {
               // SENT TO OTHER USERS WHEN USER DISCONNECT
-              // User joined
+              // OTHER USER JOINED
               _messages = [
                 ..._messages,
                 {
@@ -143,8 +146,6 @@
             });
 
             messageForm.addEventListener("submit", e => {
-              console.log("CLICK!");
-
               e.preventDefault();
               const message = messageInput.value;
 
@@ -166,13 +167,13 @@
             });
 
             Notification.requestPermission().then(function(result) {
-              console.log("Notifications turned on!");
+              clientLog("Notifications turned on!");
             });
 
             adaptChatUI();
           })
           .catch(err => {
-            console.error("Woops:", err);
+            clientLog(err, true);
           });
       }
     }, 500);
@@ -211,35 +212,35 @@
   }
 </script>
 
-<style lang="scss">
-  #message-input {
-    border: none;
-    background: #fff6;
-  }
-
-  #submit-button {
-    border: none;
-    background: rgba(246, 71, 71, 0.5);
-    font-weight: 700;
-    cursor: pointer;
-  }
-</style>
-
 <div
   id="chatter"
   class="p-4 is-content"
+  class:hidden={minimized}
   out:scale={{ duration: 250 }}
   in:scale={{ duration: 250 }}>
 
-  <h2 class="mb-3">Snattra</h2>
-  <button id="chatter-disconnect" on:click={() => disconnect()}>
-    Koppla ifrån
-  </button>
+  <header>
+    <h2>Käbbel-chatt</h2>
+    
+    <div class="header-actions">
+      <button on:click={() => disconnect()} title="Disconnect from chat">
+        <Fa icon={faSignOutAlt} />
+      </button>
+  
+      <button on:click={() => minimized = !minimized} title="Minimize window">
+        {#if minimized}
+          <Fa icon={faAngleUp} />
+        {:else}
+          <Fa icon={faAngleDown} />
+        {/if}
+      </button>
+    </div>
+  </header>
 
-  <div class="main center">
+  <div class="main center mt-3">
     <div class="row mb-3">
       <div class="col">
-        <div class="label mb-1">Aktiva användare</div>
+        <div class="label mb-1">Aktiva käbblare</div>
         <div id="user-container">
           <!-- Online users -->
           {#each _users as user}
@@ -250,7 +251,7 @@
     </div>
     <div class="row">
       <div class="col">
-        <div class="label mb-1">Snatter</div>
+        <div class="label mb-1">Käbbel</div>
         <div id="message-container">
           <!-- Message container -->
           {#each _messages as message}
@@ -261,8 +262,8 @@
     </div>
   </div>
   <form id="send-container">
-    <input type="text" id="message-input" placeholder="Snattra något.." />
-    <button type="submit" id="submit-button">Skicka</button>
+    <input type="text" id="message-input" placeholder="Käbbla något.." autocomplete="off" />
+    <button type="submit" id="submit-button" title="Skriv något och skicka">Käbbla</button>
   </form>
 
   {#if name == '' || name == null}

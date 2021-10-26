@@ -30,11 +30,51 @@ html {
 
 	border-radius: 0.25rem;
 
+	&.hidden {
+		height: 65px;
+		overflow: hidden;
+
+		header + * {
+			opacity: 0;
+		}
+	}	
+
+	header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		margin: -1rem;
+		margin-bottom: 0rem;
+		padding: 1rem;
+		background: rgba(180, 240, 160, .3);
+
+		.header-actions {			
+			button {
+				width: 2rem;
+				height: 2rem;
+				border-radius: 50%;
+				border: none;
+
+				font-size: 1rem;
+				color: #666;
+				background-color: rgba(180, 240, 220, 0);
+				cursor: pointer;
+				transition: all .25s ease-in-out;
+
+				&:hover, &:active, &:focus {
+					background-color: rgba(180, 240, 220, .5)
+				}
+			}
+		}
+	}
+
 	h2 {
 		display: flex;
-		color: #2e3035;
 		font-size: 1.25rem;
 		font-weight: 700;
+		color: #450;
+		letter-spacing: .5px;
 
 		.smol {
 			font-size: 12px;
@@ -50,18 +90,18 @@ html {
 		background: #fff6;
 		font-size: 0.9rem;
 
-
-		::-webkit-scrollbar {
-			width: 10px;
+		overflow-y: hidden;
+		
+		span {
+			display: inline-block;
+			padding: .5rem 0rem .5rem .5rem;
+			font-weight: 700;
 		}
-		::-webkit-scrollbar-track {
-			background: #f1f1f1;
+		span::after {
+			content: ', '
 		}
-		::-webkit-scrollbar-thumb {
-			background: #888;
-		}
-		::-webkit-scrollbar-thumb:hover {
-			background: #555;
+		span:last-of-type::after {
+			content: ''
 		}
 
 		> div {
@@ -75,20 +115,21 @@ html {
 		> div:nth-child(odd) {
 			background: #f8fcb285;
 		}
+
+		::-webkit-scrollbar {
+			width: 10px;
+		}
+		::-webkit-scrollbar-track {
+			background: #f1f1f1;
+		}
+		::-webkit-scrollbar-thumb {
+			background: #888;
+		}
+		::-webkit-scrollbar-thumb:hover {
+			background: #555;
+		}
 	}
-	#user-container {
-		overflow-y: hidden;
-		
-		span {
-			padding: .5rem 0rem .5rem 1rem;
-		}
-		span::after {
-			content: ', '
-		}
-		span:last-of-type::after {
-			content: ''
-		}
-	}
+
 	#message-container {
 		overflow-y: scroll;
 		scroll-behavior: smooth;
@@ -109,18 +150,6 @@ html {
 			width: 150px;
 			max-width: 20%;
 			height: 50px;
-		}
-	}
-	#chatter-disconnect {
-		position: absolute;
-		top: 1.25rem;
-		right: 1rem;
-		background: unset;
-		border: unset;
-		cursor: pointer;
-
-		&:hover, &:active, &:focus {
-			text-decoration: underline;
 		}
 	}
 	#chatter-overlay {
@@ -149,6 +178,20 @@ html {
 			}
 		}
 	}
+	#message-input {
+		border: none;
+		background: #fff6;
+	}	
+	#submit-button {
+		border: none;
+		background: rgba(180, 240, 220, .5);
+		font-weight: 700;
+		cursor: pointer;
+	}
+
+	.label {
+		font-weight: 400;
+	}
 }
 
 @media (max-width: 640px) {
@@ -156,7 +199,27 @@ html {
 		max-width: none;
 	} */
 
-	#chatter {
+	#chatter#chatter {
+		bottom: 0;
+		right: 0;
+		left: 0;
+		width: 100%;
+		height: 100vh;
+		max-width: 100%;
+		min-width: unset;
+
+		&.hidden {
+			height: 65px;
+		}
+
+		.main {
+			flex: 1;
+
+			#message-container {
+				max-height: calc(100vh - 12rem - 130px);
+			}
+		}
+
 		.row {
 			flex-direction: column;
 			.col {

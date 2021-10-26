@@ -14,7 +14,7 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@fortawesome/fontawesome-free": "^5.15.3",
+		"@fortawesome/free-solid-svg-icons": "^5.15.4",
 		"@types/dat.gui": "^0.7.6",
 		"axios": "^0.19.2",
 		"body-parser": "^1.19.0",
@@ -29,6 +29,7 @@
 		"node-fetch": "^2.6.1",
 		"sirv-cli": "^0.4.6",
 		"socket.io": "^2.4.1",
+		"svelte-fa": "^2.3.3",
 		"three": "^0.129.0",
 		"three-dat.gui": "^2.0.7"
 	},
